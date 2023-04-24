@@ -8,8 +8,8 @@
     <string name="calculate">Calculate</string>
     <string name="home">Home</string>
     <string name="history">History</string>
-    <string name="me">me</string>
-    <string name="you">you</string>
+    <string name="me">Me</string>
+    <string name="you">You</string>
 
     <!-- geometry of heart-->
     <string name="heart_empty_path">
