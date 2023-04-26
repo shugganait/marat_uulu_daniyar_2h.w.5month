@@ -1,7 +1,6 @@
 package com.kg.lovecalculator.ui.calculator
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,21 +8,22 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
+import com.kg.lovecalculator.App
 import com.kg.lovecalculator.R
 import com.kg.lovecalculator.remote.RetrofitService
 import com.kg.lovecalculator.databinding.FragmentCalculatorBinding
 import com.kg.lovecalculator.remote.LoveModel
+import com.kg.lovecalculator.simpleModels.Love
 import retrofit2.Call
 import retrofit2.Response
 
 class CalculatorFragment : Fragment() {
 
     private lateinit var binding: FragmentCalculatorBinding
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentCalculatorBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -37,16 +37,19 @@ class CalculatorFragment : Fragment() {
     private fun initClickListeners() {
         binding.apply {
             btnCalculate.setOnClickListener {
-                if (etFirstName.text!!.isEmpty()){
-                    etFirstName.error = "fiel for first name is empty(("
-                } else if (etSecondName.text!!.isEmpty()){
-                    etSecondName.error = "fiel for second name is empty(("
+                if (etFirstName.text!!.isEmpty()) {
+                    etFirstName.error = "field for first name is empty(("
+                } else if (etSecondName.text!!.isEmpty()) {
+                    etSecondName.error = "field for second name is empty(("
                 } else {
                     RetrofitService().api.percentageName(
                         etFirstName.text.toString(),
                         etSecondName.text.toString()
                     ).enqueue(object : retrofit2.Callback<LoveModel> {
-                        override fun onResponse(call: Call<LoveModel>, response: Response<LoveModel>) {
+                        override fun onResponse(
+                            call: Call<LoveModel>,
+                            response: Response<LoveModel>
+                        ) {
                             findNavController().navigate(
                                 R.id.resultFragment,
                                 bundleOf(
@@ -56,7 +59,6 @@ class CalculatorFragment : Fragment() {
                                     KEY_FOR_RESULT to response.body()?.result
                                 )
                             )
-                            Log.e("shug", "onResponse: ${response.body()}")
                             etFirstName.text?.clear()
                             etSecondName.text?.clear()
                         }
@@ -82,9 +84,9 @@ class CalculatorFragment : Fragment() {
     }
 
     companion object {
-        val KEY_FOR_FNAME = "fname"
-        val KEY_FOR_SNAME = "sname"
-        val KEY_FOR_PERC = "1000%"
-        val KEY_FOR_RESULT = "result"
+        const val KEY_FOR_FNAME = "fname"
+        const val KEY_FOR_SNAME = "sname"
+        const val KEY_FOR_PERC = "1000%"
+        const val KEY_FOR_RESULT = "result"
     }
 }
